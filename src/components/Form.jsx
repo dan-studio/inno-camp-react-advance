@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FormInfo from "./FormInfo";
+
 import styled from "styled-components";
 
 const Form = (props) => {
@@ -13,8 +13,8 @@ const Form = (props) => {
         </div>
     
         <div>
-            {toggle && <FormInfo />}
         </div>
+            <InputBox type="text" placeholder="title" />
             <ToggleButton onClick={() => {setToggle(!toggle)}} >-</ToggleButton>
     </Formed>
    ); 
