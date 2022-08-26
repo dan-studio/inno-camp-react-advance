@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import '../App.css';
 
-import './App.css';
-
-function App() {
+const Info = () => {
   return (
 <StInfoContainer>
       <StAlbumSet>
@@ -20,7 +19,7 @@ function App() {
   );
 }
 
-export default App;
+export default Info;
 
 const StInfoContainer = styled.div`
   display: flex;
