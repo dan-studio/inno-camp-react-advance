@@ -8,11 +8,7 @@ const Main = () => {
   return (
     <MainPage>
       <Header/>
-<<<<<<< HEAD
       <Form/>
-=======
-      <Form />
->>>>>>> hj
       <List/>
     </MainPage>
   );
