@@ -6,7 +6,7 @@ import { nanoid } from "@reduxjs/toolkit";
 const Form = (props) => {
   const titleInput = useRef(null);
   const artistInput = useRef(null);
-  const imgInput = useRef();
+  const imgInput = useRef(null);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
   return (
