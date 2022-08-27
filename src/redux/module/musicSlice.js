@@ -20,7 +20,7 @@ const initialState = {
 }
 
 const counterSlice = createSlice({
-  name: "counter",
+  name: "music",
   initialState,
   reducers: {
     addMusic: (state = initialState, action={}) => {
