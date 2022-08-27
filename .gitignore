@@ -22,21 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-
-#json
-.json
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 # json
 .json
 
 # yarn
 yarn.lock
 
-=======
-#json
-.json
->>>>>>> 241b04f (test commit)
->>>>>>> origin/sub-master
