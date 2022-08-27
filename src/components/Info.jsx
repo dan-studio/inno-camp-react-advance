@@ -76,14 +76,15 @@ const StButtonSet = styled.div`
 `;
 
 const StLike = styled.div`
-border : 1px solid red;
+  border : 1px solid red;
   width : 60px;
   height: 60px;
   font-size: 40px;
-  text-align: center;
+  margin: 10px;
+  /* text-align: center; */
 
-  position : relative;
-  word-break:break-all;
+  /* position : relative; */
+  /* word-break:break-all; */
   color : red;
 `;
 const StEachButton = styled.button`
