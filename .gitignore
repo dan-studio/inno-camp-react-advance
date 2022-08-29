@@ -11,6 +11,12 @@
 # production
 /build
 
+# json
+.json
+
+# yarn
+yarn.lock
+
 # misc
 .DS_Store
 .env.local
