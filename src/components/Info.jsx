@@ -1,18 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { __deleteMusic, __updateMusic } from "../redux/module/musicSlice";
+import { __deleteMusic, __updateMusic, __updateLike } from "../redux/module/musicSlice";
 import AllRounderButton from "./AllRounderButton";
 
-const Info = ({ getMusic }) => {
+const Info = ({ coverUrl, artist, title, like, id }) => {
   const titleInput = useRef(null);
   const artistInput = useRef(null);
   const ImgUrlInput = useRef(null);
   const FormHelp = useRef(null);
   const [toggle, setToggle] = useState(false);
-  const { coverUrl, artist, title, like, id } = getMusic;
-  const [likeNow, setLikeNow] = useState(like);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const deleteItem = (e) => {
@@ -20,11 +19,11 @@ const Info = ({ getMusic }) => {
     dispatch(__deleteMusic(id));
     navigate(-1);
   };
+
   const likeHandler = () => {
-    dispatch(__updateMusic(id, setLikeNow({like:!like})))
-    console.log(id)
-    console.log(likeNow)
+    dispatch(__updateLike({id:id, like:!like}));
   }
+
   return (
     <StInfoContainer>
       <StAlbumSet>
@@ -45,13 +44,14 @@ const Info = ({ getMusic }) => {
       {toggle ? (
         <EditDiv>
           <h2>Edit</h2>
-          <InputBox length="300px" ref={artistInput} type="text" placeholder="Artist" />
-          <InputBox length="300px" ref={titleInput} type="text" placeholder="Title" />
+          <InputBox length="300px" ref={artistInput} type="text" placeholder="Artist" defaultValue={artist}/>
+          <InputBox length="300px" ref={titleInput} type="text" placeholder="Title" defaultValue={title}/>
           <InputBox
             length="300px"
             ref={ImgUrlInput}
             type="text"
             placeholder="Cover URL"
+            defaultValue={coverUrl}
           />
           <div ref={FormHelp}></div>
           <AllRounderButton
@@ -66,7 +66,8 @@ const Info = ({ getMusic }) => {
                 return;
               }
               dispatch(
-                __updateMusic(id, {
+                __updateMusic({
+                  id: id,
                   artist: artistInput.current.value,
                   title: titleInput.current.value,
                   coverUrl: ImgUrlInput.current.value,

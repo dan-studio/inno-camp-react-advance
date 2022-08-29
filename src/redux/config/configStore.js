@@ -4,7 +4,7 @@ import musicReducer from '../module/musicSlice'
 
 
 const store = configureStore({
-  reducer:{music:musicReducer}
+  reducer:{musics:musicReducer}
 })
 
 export default store

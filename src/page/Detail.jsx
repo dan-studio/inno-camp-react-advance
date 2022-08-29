@@ -1,27 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Info from "../components/Info";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import Header from "../components/Header";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { __getMusic } from '../redux/module/musicSlice';
+
 
 const Detail = () => {
   
   const { id } = useParams();
-  const getMusic = useSelector((state) =>
-    state.music.list.find((music) => music.id === id)
-  ); //crud의 read 필요없음.
+  const dispatch = useDispatch();
+
+  const { isLoading, error, list } = useSelector((state) => state.musics);
+
+  const getMusic = list.find((music)=> music.id === id);
   
+
+  useEffect(()=>{
+    dispatch(__getMusic())
+  },[dispatch])
+
+  if (isLoading) {
+    return <div>로딩 중....</div>;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+
   return (
     <DetailPage>
       <Header/>
       <DetailContent>
-      <Info getMusic={getMusic} />
+        <Info {...getMusic} />
       </DetailContent>
       <DetailContent>
-      <CommentList comments={getMusic.comments} />
+        {getMusic.comment !== [] && <CommentList comments={getMusic.comment} />}
       </DetailContent>
       <CommentForm />
     </DetailPage>

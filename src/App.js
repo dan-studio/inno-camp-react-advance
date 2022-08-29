@@ -7,11 +7,13 @@ import { __getMusic } from "./redux/module/musicSlice";
 import { useDispatch } from "react-redux";
 
 function App() {
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-useEffect(()=>{
-  dispatch(__getMusic())
-},[dispatch])
+  useEffect(()=>{
+    dispatch(__getMusic())
+  },[dispatch])
+
+  
   return (
     <div className="App">
       <Routes>

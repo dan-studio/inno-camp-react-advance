@@ -52,7 +52,7 @@ const Form = (props) => {
                   title: titleInput.current.value,
                   coverUrl: ImgUrlInput.current.value,
                   like: false,
-                  comments: [],
+                  comment: [],
                 })
               );
               setToggle(!toggle);
