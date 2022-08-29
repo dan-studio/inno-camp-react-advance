@@ -2,10 +2,15 @@ import './App.css';
 import Main from './page/Main';
 import Detail from './page/Detail'
 import { Routes, Route} from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { __getMusic } from "./redux/module/musicSlice";
+import { useDispatch } from "react-redux";
 function App() {
-  const counter = useSelector((state)=> state.counter)
-  console.log(counter)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(__getMusic())
+  }, [dispatch])
   return (
     <div className="App">
       <Routes>
