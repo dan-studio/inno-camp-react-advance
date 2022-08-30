@@ -12,7 +12,7 @@ export const __getMusic = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const data = await axios.get("http://localhost:3001/list");
-            return thunkAPI.fulfillWithValue(data.data); //data.data를 [__getMusic.fulfilled]부분으로 디스패치됩니다.
+            return thunkAPI.fulfillWithValue(data.data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -64,15 +64,15 @@ export const __updateMusic = createAsyncThunk(
     }
 );
 
-// export const __postComment = createAsyncThunk(
-//     "music/postComment",
-//     async (newComment) => {
-//         const response = await axios.post(
-//             "http://localhost:3001/list",
-//             newComment
-//         );
-//     }
-// );
+export const __postComment = createAsyncThunk(
+    "music/postComment",
+    async (newComment) => {
+        const response = await axios.post(
+            "http://localhost:3001/list",
+            newComment
+        );
+    }
+);
 
 //comment 추가하기.
 export const __addComment = createAsyncThunk(
@@ -83,9 +83,9 @@ export const __addComment = createAsyncThunk(
                 "http://localhost:3001/list",
                 payload
             );
-            return thunkAPI.fulfillWithValue(data.data); //Promise에서 resolve된 경우, dispatch 해주는 기능을 가진 API
+            return thunkAPI.fulfillWithValue(data.data);
         } catch (error) {
-            return thunkAPI.rejectWithValue(error); //Promise가 reject 된 경우, dispatch 해주는 기능을 가진 API
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -147,27 +147,14 @@ const musics = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
-
-        // TODO addComment Thunk
+        // TODO addMusic Thunk
         [__addComment.pending]: (state) => {
             state.isLoading = true;
         },
         [__addComment.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.list.push(action.payload);
-            // state.list.comment.push(action.payload);
-            // const MusicIdIndex = state.list.findIndex(
-            //     (e) => e.id === action.payload.id
-            // );
-            // state.list[MusicIdIndex].comment.push(action.payload);
-
-            // state.list.push(action.payload);
-            // const newstate = { ...state };
-            // const MusicIdIndex = newstate.list.findIndex(
-            //     (e) => e.id === action.payload.id
-            // );
-            // newstate.list[MusicIdIndex].comment.push(action.payload);
-            // return newstate;
+            console.log(action.payload);
         },
         [__addComment.rejected]: (state, action) => {
             state.isLoading = false;
