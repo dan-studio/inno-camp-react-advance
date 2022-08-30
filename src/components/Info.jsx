@@ -1,85 +1,169 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import '../App.css';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { __deleteMusic, __updateMusic } from "../redux/module/musicSlice";
+import AllRounderButton from "./AllRounderButton";
 
-const Info = () => {
+
+const Info = ({ id, artist, title, coverUrl, like }) => {
+  const [toggle, setToggle] = useState(false);
+  const [formHelper, setFormHelper] = useState(false);
+  const titleInput = useRef(null);
+  const artistInput = useRef(null);
+  const ImgUrlInput = useRef(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const updateHandler = (e) => {
+    e.preventDefault();
+    if(!artistInput.current.value){return setFormHelper("You Must Enter Artist to Proceed")}
+    if(!titleInput.current.value){return setFormHelper("You Must Enter Title to Proceed")}
+    if(!ImgUrlInput.current.value){return setFormHelper("You Must Enter Image URL to Proceed")}
+    const updateMusic = {
+      id,
+      artist: artistInput.current.value,
+      title: titleInput.current.value,
+      coverUrl: ImgUrlInput.current.value,
+    };
+    dispatch(__updateMusic(updateMusic));
+    setToggle(!toggle);
+  };
+  const likeHandler = () => {
+    const updateLike = {
+      id,
+      like:!like
+    }
+    dispatch(__updateMusic(updateLike))
+  }
+
+  const deleteHandler = (e) => {
+    e.preventDefault()
+    dispatch(__deleteMusic(id))
+    navigate(-1)
+  }
+
   return (
-<StInfoContainer>
+    <StInfoContainer>
       <StAlbumSet>
-        <StAlbumImg src="https://musicmeta-phinf.pstatic.net/album/007/795/7795016.jpg?type=r480Fll&v=20220825145549"/>
-        <StArtist>가수 이름 들어갈 자리</StArtist>
-        <StTiltle>제목 들어갈 자리.</StTiltle>
+        <StAlbumImg src={coverUrl} />
+        <StArtist>{artist}</StArtist>
+        <StTiltle>{title}</StTiltle>
       </StAlbumSet>
       <StButtonSet>
-        <StLike>♥</StLike>
-        <StEachButton>DEL</StEachButton>
-        <StEachButton>Go Back</StEachButton>
+        {like ? <StLike onClick={likeHandler}>♥️</StLike> : <StLike onClick={likeHandler}>♡</StLike>}
+        <AllRounderButton
+          onClick={() => {
+            navigate(-1);
+          }}
+          buttonName={"Go Back"}
+        />
+      </StButtonSet>
+      <StButtonSet>
+        {toggle ? (
+          <EditDiv>
+            <h3>Edit</h3>
+            <FormHelper>{formHelper}</FormHelper>
+            <InputBox
+              length="300px"
+              ref={artistInput}
+              type="text"
+              placeholder="Artist"
+              defaultValue={artist}
+            />
+            <InputBox
+              length="300px"
+              ref={titleInput}
+              type="text"
+              placeholder="Title"
+              defaultValue={title}
+            />
+            <InputBox
+              length="300px"
+              ref={ImgUrlInput}
+              type="text"
+              placeholder="Cover URL"
+              defaultValue={coverUrl}
+            />
+            <AllRounderButton onClick={updateHandler} buttonName={"Submit"} />
+          </EditDiv>
+        ) : null}
+        {toggle ? (
+          <AllRounderButton
+            onClick={(e) => {
+              e.preventDefault();
+              setToggle(!toggle);
+              setFormHelper("")
+            }}
+            buttonName={"Close"}
+          />
+        ) : (
+          <AllRounderButton
+            onClick={(e) => {
+              e.preventDefault();
+              setToggle(!toggle);
+            }}
+            buttonName={"Edit"}
+          />
+        )}
+      </StButtonSet>
+      <StButtonSet>
+        <AllRounderButton buttonName={"Delete"} onClick={deleteHandler}/>
       </StButtonSet>
     </StInfoContainer>
   );
-}
+};
 
 export default Info;
 
 const StInfoContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  border : 3px solid black;
-  max-width: 1200px;
+  max-width: 1000px;
   min-width: 800px;
-  margin: auto;
+  margin: 20px auto;
 `;
 const StAlbumSet = styled.div`
-  border : 3px solid purple;
-  padding: 10%;
-  margin: 0 20px 0 20%;
-  /* justify-content : center; */
-  /* align-items: center; */
+  margin: 30px 0 0 0;
+  width: 450px;
 `;
 const StAlbumImg = styled.img`
-  border : 1px solid blue;
-  width : 300px;
-  height : 300px;
+  width: 450px;
+  height: 450px;
 `;
 
-const StArtist = styled.h3`
-  border : 1px solid red;
-  text-align: center;
-  font-size: 15px;
-  margin : 10px auto;
-  /* justify-content : center; */
-  /* align-items: center; */
-`;
+const StArtist = styled.h2``;
 
-const StTiltle = styled.p`
-  border : 1px solid green;
-  text-align : center;
-  font-size : 20px;
-  margin : 10px auto;
-`;
+const StTiltle = styled.h2``;
 
 const StButtonSet = styled.div`
-  border : 1px solid green;
-  position: relative;
-  /* float : right; */
-  /* justify-content : center; */
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  
+  width: 450px;
 `;
 
 const StLike = styled.div`
-border : 1px solid red;
-  width : 60px;
-  height: 60px;
   font-size: 40px;
+  color: #fa1e2d;
+`;
+const InputBox = styled.input`
+  margin: 30px;
+  padding: 8px 10px;
+  font-size: 20px;
+  border: none;
   text-align: center;
-  position : relative;
-  word-break:break-all;
-  color : red;
+  :focus {
+    outline: none;
+  }
+  width: ${(props) => props.length};
+  &::placeholder {
+    color: #aaa;
+  }
 `;
-const StEachButton = styled.button`
-  margin : 10px;
+const EditDiv = styled.div`
+  box-shadow: 5px 5px 10px #999;
 `;
+const FormHelper = styled.div`
+margin-top: 10px;
+font-size: 20px;
+color: #fa1e2d;
+`

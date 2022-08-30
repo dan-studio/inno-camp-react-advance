@@ -1,8 +1,36 @@
-import React from 'react';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import AllRounderButton from "./AllRounderButton";
+
+const CommentList = ({ commentId, userName, content, commentLike }) => {
+  const { id } = useParams();
+  const comments = useSelector((state)=>state.musics.list.find((music) => music.id === id).comment)  
+  console.log(comments)
+  return (
+    <>
+      {comments?.map((comment) => (
+        <CommentListBox key={comment.commentId}>
+          <Paragraph length="100px">{comment.userName}</Paragraph>
+          <Paragraph length="240px">{comment.content}</Paragraph>
+          {commentLike ? (
+            <CommentLike>♥️</CommentLike>
+          ) : (
+            <CommentLike>♡</CommentLike>
+          )}
+          <AllRounderButton length={"60px"} buttonName={"edit"} />
+          <AllRounderButton length={"60px"} buttonName={"delete"} />
+        </CommentListBox>
+      ))}
+    </>
+  );
+};
+
+export default CommentList;
 
 const CommentListBox = styled.div`
-  height: 100px;
+  height: 50px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -10,18 +38,11 @@ const CommentListBox = styled.div`
 `;
 
 const CommentLike = styled.span`
-  font-size: 30px;
-  color: red;
+  font-size: 20px;
+  color: #fa1e2d;
 `;
-const CommentList = () => {
-  return (
-    <CommentListBox>
-      <span>User1:</span>
-      <p>Comment1</p>
-      <CommentLike>♡♥</CommentLike>
-      <button>Del</button>
-    </CommentListBox>
-  );
-};
-
-export default CommentList;
+const Paragraph = styled.p`
+  display: inline-block;
+  word-wrap: break-word;
+  width: ${(props) => props.length};
+`;

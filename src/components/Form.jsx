@@ -1,99 +1,107 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { addMusic } from "../redux/module/musicSlice";
+// import { addMusic } from "../redux/module/musicSlice"; //로컬
+import { __addMusic } from "../redux/module/musicSlice";
 import { nanoid } from "@reduxjs/toolkit";
+import AllRounderButton from "./AllRounderButton";
 const Form = (props) => {
   const titleInput = useRef(null);
   const artistInput = useRef(null);
-  const imgInput = useRef(null);
+  const ImgUrlInput = useRef(null);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
   return (
+    <>
     <Formed>
       {toggle ? (
         <div>
-          <InputBox ref={artistInput} type="text" placeholder="Artist" />
-          <InputBox ref={titleInput} type="text" placeholder="title" />
-          <InputBox ref={imgInput} type="text" placeholder="imgURL" />
-          <Button
+          <InputBox
+            length="300px"
+            ref={artistInput}
+            type="text"
+            placeholder="Artist"
+          />
+          <InputBox
+            length="300px"
+            ref={titleInput}
+            type="text"
+            placeholder="Title"
+          />
+          <InputBox
+            length="500px"
+            ref={ImgUrlInput}
+            type="text"
+            placeholder="Cover URL"
+          />
+          <AllRounderButton
             onClick={(e) => {
               e.preventDefault();
+              if (
+                !artistInput.current.value ||
+                !titleInput.current.value ||
+                !ImgUrlInput.current.value
+              ){
+                //TODO: FormHelp 멘트 추가하기
+                return;
+              }
               dispatch(
-                addMusic({
+                __addMusic({
                   id: nanoid(),
-                  artist: artistInput.current.value,
-                  coverUrl: imgInput.current.value,
+                  "artist": artistInput.current.value,
                   title: titleInput.current.value,
+                  coverUrl: ImgUrlInput.current.value,
                   like: false,
-                  comment: [
-                    {
-                      userName: "",
-                      content: "",
-                      commentLike: false,
-                    },
-                  ],
+                  comment: [],
                 })
               );
               setToggle(!toggle);
             }}
-          >
-            Submit
-          </Button>
+            buttonName={"Submit"}
+          />
         </div>
       ) : null}
-      <ToggleButton
-        onClick={(e) => {
-          e.preventDefault();
-          setToggle(!toggle);
-        }}
-      >
-        ↕️
-      </ToggleButton>
     </Formed>
+      {toggle ? (
+        <AllRounderButton
+          onClick={(e) => {
+            e.preventDefault();
+            setToggle(!toggle);
+          }}
+          buttonName={"Close"}
+        />
+      ) : (
+        <AllRounderButton
+          onClick={(e) => {
+            e.preventDefault();
+            setToggle(!toggle);
+          }}
+          buttonName={"Open Form"}
+        />
+      )}
+    </>
   );
 };
 
 export default Form;
 
 const Formed = styled.form`
-  max-width: 1200px;
-  min-width: 800px;
-  display:flex;
-  justify-content: center;
-  background-color: #ccc;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 5px 5px 10px #999;
 `;
 
 const InputBox = styled.input`
+  margin: 30px;
   padding: 8px 10px;
-  background-color: #764abc;
-  line-height: 20px;
-  font-size: 16px;
-  color: #fff;
-  border-radius: 20px;
+  font-size: 20px;
   border: none;
-  outline: none;
-  &::placeholder {
-    color: #fff;
+  text-align: center;
+  :focus {
+    outline: none;
   }
-`;
-
-const Button = styled.button`
-  background-color: #764abc;
-  padding: 10px;
-  color: #fff;
-  border-radius: 20px;
-  border: none;
-`;
-
-const ToggleButton = styled.button`
-  width: 50px;
-  height: 30px;
-  color: #fff;
-  font-size: 18px;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: #764abc;
+  width: ${(props) => props.length};
+  &::placeholder {
+    color: #aaa;
+  }
 `;
