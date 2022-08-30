@@ -1,58 +1,60 @@
-import { nanoid } from '@reduxjs/toolkit';
-import React, {useRef} from 'react';
-import { useDispatch } from 'react-redux';
-import { __addComment } from "../redux/module/musicSlice";
+import { nanoid } from "@reduxjs/toolkit";
+import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import AllRounderButton from './AllRounderButton';
+import { __postComment } from "../redux/module/musicSlice";
+import AllRounderButton from "./AllRounderButton";
 
-const CommentFormBox = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 50px;
-  margin: auto;
-`;
+const CommentForm = () => {
+  const {id} = useParams()
+  const dispatch = useDispatch()
+  const userNameInput = useRef(null)
+  const contentInput = useRef(null)
 
-const CommentFormInput = styled.input`
-  margin-right: 20px;
-`;
+  
+  const commentHandler = () => {
+    const usernameValue = userNameInput.current.value
+    const contentValue = contentInput.current.value
+    console.log(usernameValue, contentValue)
+    const postComment = {
+      id,
+      commentId: nanoid(),
+      username: usernameValue,
+      content: contentValue,
+      commentLike: false
+    }
+    dispatch(__postComment(postComment))
 
-const CommentForm = ({commentId, username, content, commentLike, comment}) => {
-  const usernameInput = useRef(null);
-  const contentInput = useRef(null);
-  const commentLikeInput = useRef(null);
-  const addComment = {
-          commentId ,
-          username: usernameInput.current.value,
-          content: contentInput.current.value,
-          commentLike: commentLikeInput.current.value
   }
-  console.log(usernameInput.current.value)
-  console.log(contentInput.current.value)
-  console.log(commentLikeInput.current.value)
-  const dispatch = useDispatch();
   return (
     <CommentFormBox>
       <div>
-        <CommentFormInput 
-          type="text"
-          placeholder='Username' 
-        />
-        <CommentFormInput 
-          type="text"
-          placeholder='comment' 
-        />
+        <CommentFormInput ref={userNameInput} length="200px" type="text" placeholder="Username" />
+        <CommentFormInput ref={contentInput} length="400px" type="text" placeholder="comment" />
       </div>
-      <AllRounderButton
-      onClick={(e) => {
-        e.preventDefault();
-        dispatch(
-          __addComment(addComment)
-        )
-      }}
-      buttonName={"Submit"} />
+      <AllRounderButton buttonName={"Submit"} onClick={commentHandler}/>
     </CommentFormBox>
   );
 };
 
 export default CommentForm;
+const CommentFormBox = styled.div`
+  width: 450px;
+  margin: 20px auto;
+  box-shadow: 5px 5px 20px #999;
+`;
+
+const CommentFormInput = styled.input`
+  margin: 15px;
+  width: ${(props) => props.length};
+  font-size: 18px;
+  border: none;
+  text-align: center;
+  :focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: #aaa;
+  }
+`;

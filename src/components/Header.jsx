@@ -7,7 +7,7 @@ const Header = () => {
         src="https://d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg"
         alt="logo"
       />
-      <HeaderA href="/">DUXMUSIC</HeaderA>
+      <HeaderA href="/">dux-music</HeaderA>
     </HeaderDiv>
   );
 };
@@ -24,9 +24,6 @@ font-family: 'helvetica', cursive;
   text-decoration: none;
   font-size: 35px;
   font-weight: bold;
-  &:hover{
-    color: white;
-  }
 `;
 
 const LogoImg = styled.img`

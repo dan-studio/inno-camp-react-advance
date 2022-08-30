@@ -1,28 +1,31 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { __getComment } from "../redux/module/commentSlice";
 import AllRounderButton from "./AllRounderButton";
 
-const CommentList = ({ commentId, userName, content, commentLike }) => {
-  const { id } = useParams();
-  const comments = useSelector((state)=>state.musics.list.find((music) => music.id === id).comment)  
-  console.log(comments)
+const CommentList = () => {
+  const dispatch = useDispatch()
+  
+const getComment = useSelector((state)=>state.comments.comment)
+
+console.log(getComment)
+
+  useEffect(()=> {
+    dispatch(__getComment())
+  }, [dispatch])
+
+
   return (
     <>
-      {comments?.map((comment) => (
-        <CommentListBox key={comment.commentId}>
-          <Paragraph length="100px">{comment.userName}</Paragraph>
-          <Paragraph length="240px">{comment.content}</Paragraph>
-          {commentLike ? (
-            <CommentLike>♥️</CommentLike>
-          ) : (
-            <CommentLike>♡</CommentLike>
-          )}
-          <AllRounderButton length={"60px"} buttonName={"edit"} />
-          <AllRounderButton length={"60px"} buttonName={"delete"} />
-        </CommentListBox>
-      ))}
+      <CommentListBox>
+        <Paragraph length="100px">{}</Paragraph>
+        <Paragraph length="240px">{}</Paragraph>
+        <CommentLike>♥️</CommentLike>
+        <CommentLike>♡</CommentLike>
+        <AllRounderButton length={"60px"} buttonName={"edit"} />
+        <AllRounderButton length={"60px"} buttonName={"delete"} />
+      </CommentListBox>
     </>
   );
 };

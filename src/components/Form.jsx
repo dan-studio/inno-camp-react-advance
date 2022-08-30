@@ -5,17 +5,37 @@ import { useDispatch } from "react-redux";
 import { __addMusic } from "../redux/module/musicSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import AllRounderButton from "./AllRounderButton";
+
 const Form = (props) => {
   const titleInput = useRef(null);
   const artistInput = useRef(null);
   const ImgUrlInput = useRef(null);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
+  const [formHelper, setFormHelper] = useState("");
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if(!artistInput.current.value){return setFormHelper("You Must Enter Artist to Proceed")}
+    if(!titleInput.current.value){return setFormHelper("You Must Enter Title to Proceed")}
+    if(!ImgUrlInput.current.value){return setFormHelper("You Must Enter Image URL to Proceed")}
+    dispatch(
+      __addMusic({
+        id: nanoid(),
+        artist: artistInput.current.value,
+        title: titleInput.current.value,
+        coverUrl: ImgUrlInput.current.value,
+        like: false,
+        comment: [],
+      })
+    );
+    setToggle(!toggle);
+  }
   return (
     <>
     <Formed>
       {toggle ? (
         <div>
+          <FormHelper>{formHelper}</FormHelper>
           <InputBox
             length="300px"
             ref={artistInput}
@@ -35,28 +55,7 @@ const Form = (props) => {
             placeholder="Cover URL"
           />
           <AllRounderButton
-            onClick={(e) => {
-              e.preventDefault();
-              if (
-                !artistInput.current.value ||
-                !titleInput.current.value ||
-                !ImgUrlInput.current.value
-              ){
-                //TODO: FormHelp 멘트 추가하기
-                return;
-              }
-              dispatch(
-                __addMusic({
-                  id: nanoid(),
-                  "artist": artistInput.current.value,
-                  title: titleInput.current.value,
-                  coverUrl: ImgUrlInput.current.value,
-                  like: false,
-                  comment: [],
-                })
-              );
-              setToggle(!toggle);
-            }}
+            onClick={submitHandler}
             buttonName={"Submit"}
           />
         </div>
@@ -67,6 +66,7 @@ const Form = (props) => {
           onClick={(e) => {
             e.preventDefault();
             setToggle(!toggle);
+            setFormHelper("")
           }}
           buttonName={"Close"}
         />
@@ -92,7 +92,7 @@ const Formed = styled.form`
 `;
 
 const InputBox = styled.input`
-  margin: 30px;
+  margin: 20px;
   padding: 8px 10px;
   font-size: 20px;
   border: none;
@@ -105,3 +105,8 @@ const InputBox = styled.input`
     color: #aaa;
   }
 `;
+const FormHelper = styled.div`
+margin-top: 10px;
+font-size: 20px;
+color: #fa1e2d;
+`

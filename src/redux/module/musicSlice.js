@@ -29,49 +29,47 @@ export const __addMusic = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-)
+);
 //db내 데이터 삭제
 export const __deleteMusic = createAsyncThunk(
   "music/DELETE_MUSIC",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.delete(`http://localhost:3001/list/${payload}`);
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await axios.delete(
+        `http://localhost:3001/list/${payload}`
+      );
+      return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-//좋아요 토글
+
+//데이터 수정
 export const __updateMusic = createAsyncThunk(
   "music/UPDATE_MUSIC",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.patch(`http://localhost:3001/list/${payload.id}`, payload);
+      const data = await axios.patch(
+        `http://localhost:3001/list/${payload.id}`,
+        payload
+      );
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-
-// db에 데이터를 넣음
-export const __addComment = createAsyncThunk(
-  "music/ADD_COMMENT",
+//댓글 등록
+export const __postComment = createAsyncThunk(
+  "music/POST_COMMENT",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://localhost:3001/list", payload);
-      return thunkAPI.fulfillWithValue(data.data);
+    const data = await axios.post(`http://localhost:3001/list/${payload.id}`, payload);
+    return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
-)
-
-export const __postComment = createAsyncThunk(
-  "music/postComment",
-  async (newComment) => {
-    const response = await axios.post("http://localhost:3001/list", newComment);
   }
 );
 
@@ -80,7 +78,7 @@ const musics = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    // TODO getMusic Thunk
+    // getMusic Thunk
     [__getMusic.pending]: (state) => {
       state.isLoading = true; // 네트워크 요청이 시작되면 로딩상태를 true로 변경
     },
@@ -92,7 +90,7 @@ const musics = createSlice({
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
       state.error = action.payload; // catch 된 error 객체를 state.error에 넣음
     },
-    // TODO addMusic Thunk
+    // addMusic Thunk
     [__addMusic.pending]: (state) => {
       state.isLoading = true;
     },
@@ -104,7 +102,7 @@ const musics = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    // TODO deleteMusic Thunk
+    // deleteMusic Thunk
     [__deleteMusic.pending]: (state) => {
       state.isLoading = true;
     },
@@ -116,7 +114,7 @@ const musics = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    // TODO updateMusic Thunk
+    // updateMusic Thunk
     [__updateMusic.pending]: (state) => {
       state.isLoading = true;
     },
@@ -130,19 +128,18 @@ const musics = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    //TODO ADDCOMMENT Thunk
-    [__addComment.pending]: (state) => {
+    // post Comment Thunk
+    [__postComment.pending]: (state) => {
       state.isLoading = true;
     },
-    [__addComment.fulfilled]: (state, action) => {
+    [__postComment.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.list.push(action.payload);
     },
-    [__addComment.rejected]: (state, action) => {
+    [__postComment.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
   },
 });
-export const {} = musics.actions;
 export default musics.reducer;

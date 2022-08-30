@@ -4,7 +4,6 @@ import {  useSelector } from "react-redux";
 
 const List = () => {
   const musicList = useSelector(state=>state.musics.list) 
-  console.log(musicList);
   
   return (
     <ListDiv>
