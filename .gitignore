@@ -24,7 +24,9 @@ yarn-error.log*
 
 # json
 .json
+db.json
 
 # yarn
 yarn.lock
+
 

@@ -1,27 +1,38 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
+import AllRounderButton from "./AllRounderButton";
 
-const CommentListBox = styled.div`
-  height: 100px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: auto;
-`;
-
-const CommentLike = styled.span`
-  font-size: 30px;
-  color: red;
-`;
 const CommentList = () => {
-  return (
-    <CommentListBox>
-      <span>User1:</span>
-      <p>Comment1</p>
-      <CommentLike>♡♥</CommentLike>
-      <button>Del</button>
-    </CommentListBox>
-  );
+    return (
+        <>
+            <CommentListBox>
+                <Paragraph length="100px">{}</Paragraph>
+                <Paragraph length="240px">{}</Paragraph>
+                <CommentLike>♥️</CommentLike>
+                <CommentLike>♡</CommentLike>
+                <AllRounderButton length={"60px"} buttonName={"edit"} />
+                <AllRounderButton length={"60px"} buttonName={"delete"} />
+            </CommentListBox>
+        </>
+    );
 };
 
 export default CommentList;
+
+const CommentListBox = styled.div`
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+`;
+
+const CommentLike = styled.span`
+    font-size: 20px;
+    color: #fa1e2d;
+`;
+const Paragraph = styled.p`
+    display: inline-block;
+    word-wrap: break-word;
+    width: ${(props) => props.length};
+`;

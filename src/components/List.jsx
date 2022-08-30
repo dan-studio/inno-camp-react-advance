@@ -1,22 +1,23 @@
-import React from "react";
 import styled from "styled-components";
 import Item from "./Item";
+import { useSelector } from "react-redux";
 
 const List = () => {
-  return (
-    <ListDiv>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-    </ListDiv>
-  );
+    const musicList = useSelector((state) => state.musics.list);
+
+    return (
+        <ListDiv>
+            {musicList.map((music) => (
+                <Item {...music} key={music.id} />
+            ))}
+        </ListDiv>
+    );
 };
 const ListDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+    width: 800px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 export default List;
