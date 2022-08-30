@@ -1,15 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import AllRounderButton from "./AllRounderButton";
+import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { useParams } from "react-router-dom";
+import useInput from "../hooks/useInput";
 
 const CommentForm = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const [username, onChangeUsernameHandler] = useInput();
+  const [comment, onChangeCommentHandler] = useInput();
+
+  const addCommentHandler = () => {
+
+  }
+
   return (
     <CommentFormBox>
       <div>
-        <CommentFormInput length="200px" type="text" placeholder="Username" />
-        <CommentFormInput length="400px" type="text" placeholder="comment" />
+        <CommentFormInput length="200px" type="text" placeholder="Username" onChange={onChangeUsernameHandler}/>
+        <CommentFormInput length="400px" type="text" placeholder="comment" onChange={onChangeCommentHandler}/>
       </div>
-      <AllRounderButton buttonName={"Submit"}/>
+      <AllRounderButton onClick={addCommentHandler} buttonName={"Submit"}/>
     </CommentFormBox>
   );
 };

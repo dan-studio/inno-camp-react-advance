@@ -1,31 +1,44 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { __deleteMusic, __updateMusic } from "../redux/module/musicSlice";
 import AllRounderButton from "./AllRounderButton";
+import useInput from "../hooks/useInput";
 
 
 const Info = ({ id, artist, title, coverUrl, like }) => {
   const [toggle, setToggle] = useState(false);
   const [formHelper, setFormHelper] = useState(false);
-  const titleInput = useRef(null);
-  const artistInput = useRef(null);
-  const ImgUrlInput = useRef(null);
+  const [updateArtist, onChangeArtistHandler, setUpdateArtist] = useInput();
+  const [updateTitle, onChangeTitleHandler, setUpdateTitle] = useInput();
+  const [updateCoverUrl, onChangeCoverUrlHandler, setUpdateCoverUrl] = useInput();
+
+  useEffect(() => {
+    setUpdateArtist(artist);
+  }, [artist]);
+
+  useEffect(() => {
+    setUpdateTitle(title);
+  }, [title]);
+
+  useEffect(() => {
+    setUpdateCoverUrl(coverUrl);
+  }, [coverUrl]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const updateHandler = (e) => {
     e.preventDefault();
-    if(!artistInput.current.value){return setFormHelper("You Must Enter Artist to Proceed")}
-    if(!titleInput.current.value){return setFormHelper("You Must Enter Title to Proceed")}
-    if(!ImgUrlInput.current.value){return setFormHelper("You Must Enter Image URL to Proceed")}
+    if(!updateArtist){return setFormHelper("You Must Enter Artist to Proceed")}
+    if(!updateTitle){return setFormHelper("You Must Enter Title to Proceed")}
+    if(!updateCoverUrl){return setFormHelper("You Must Enter Image URL to Proceed")}
     const updateMusic = {
       id,
-      artist: artistInput.current.value,
-      title: titleInput.current.value,
-      coverUrl: ImgUrlInput.current.value,
+      artist: updateArtist,
+      title: updateTitle,
+      coverUrl: updateCoverUrl,
     };
     dispatch(__updateMusic(updateMusic));
     setToggle(!toggle);
@@ -67,21 +80,21 @@ const Info = ({ id, artist, title, coverUrl, like }) => {
             <FormHelper>{formHelper}</FormHelper>
             <InputBox
               length="300px"
-              ref={artistInput}
+              onChange={onChangeArtistHandler}
               type="text"
               placeholder="Artist"
               defaultValue={artist}
             />
             <InputBox
               length="300px"
-              ref={titleInput}
+              onChange={onChangeTitleHandler}
               type="text"
               placeholder="Title"
               defaultValue={title}
             />
             <InputBox
               length="300px"
-              ref={ImgUrlInput}
+              onChange={onChangeCoverUrlHandler}
               type="text"
               placeholder="Cover URL"
               defaultValue={coverUrl}

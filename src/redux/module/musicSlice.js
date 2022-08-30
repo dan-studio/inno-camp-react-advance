@@ -35,9 +35,7 @@ export const __deleteMusic = createAsyncThunk(
   "music/DELETE_MUSIC",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.delete(
-        `http://localhost:3001/list/${payload}`
-      );
+      const data = await axios.delete(`http://localhost:3001/list/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -61,12 +59,17 @@ export const __updateMusic = createAsyncThunk(
   }
 );
 
-export const __postComment = createAsyncThunk(
-  "music/postComment",
-  async (newComment) => {
-    const response = await axios.post("http://localhost:3001/list", newComment);
-  }
-);
+// export const __postComment = createAsyncThunk(
+//   "music/POST_COMMENT",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const data = await axios.post(`http://localhost:3001/list/${payload.id}`, payload);
+//       return thunkAPI.fulfillWithValue(data.data);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error);
+//     }
+//   }
+// );
 
 const musics = createSlice({
   name: "musics",

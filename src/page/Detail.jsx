@@ -32,7 +32,7 @@ const Detail = () => {
         <Info {...getMusic} />
       </DetailContent>
       <DetailContent>
-         <CommentList />
+        <CommentList />
       </DetailContent>
       <CommentForm />
     </DetailPage>
