@@ -36,16 +36,11 @@ export const __deleteMusic = createAsyncThunk(
   "music/DELETE_MUSIC",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.delete(`http://localhost:3001/list/${payload}`);
-      return thunkAPI.fulfillWithValue(data.data);
+      await axios.delete(`http://localhost:3001/list/${payload}`);
+      return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-    // async (list_id) => {
-    //   const response = await axios.delete(
-    //     `http://localhost:3001/list/${list_id}`
-    //   );
-    //   return list_id;
   }
 );
 
@@ -122,7 +117,8 @@ const musics = createSlice({
       state.isLoading = true;
     },
     [__deleteMusic.fulfilled]: (state, action) => {
-      state.list.filter((music) => music.id !== action.payload);
+      state.isLoading = false;
+      state.list = state.list.filter((music) => music.id !== action.payload);
     },
     [__deleteMusic.rejected]: (state, action) => {
       state.isLoading = false;
