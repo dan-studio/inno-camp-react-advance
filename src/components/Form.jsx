@@ -1,18 +1,22 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-// import { addMusic } from "../redux/module/musicSlice"; //로컬
+// import { addMusic } from "../redux/module/musicSlice";
 import { __addMusic } from "../redux/module/musicSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import AllRounderButton from "./AllRounderButton";
+// import useInput from "./hooks/useInput";
 
 const Form = (props) => {
     const titleInput = useRef(null);
     const artistInput = useRef(null);
     const ImgUrlInput = useRef(null);
+
     const dispatch = useDispatch();
+
     const [toggle, setToggle] = useState(false);
     const [formHelper, setFormHelper] = useState("");
+
     const submitHandler = (e) => {
         e.preventDefault();
         if (!artistInput.current.value) {

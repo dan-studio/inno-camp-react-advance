@@ -1,22 +1,45 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import AllRounderButton from "./AllRounderButton";
 
-const CommentList = () => {
+const CommentList = ({ id, comment }) => {
+    const allMusicList = useSelector((state) => state.musics.list);
+    const location = useLocation();
+    const musicId = location.state.id;
     return (
         <>
-            <CommentListBox>
-                <Paragraph length="100px">{}</Paragraph>
-                <Paragraph length="240px">{}</Paragraph>
-                <CommentLike>♥️</CommentLike>
-                <CommentLike>♡</CommentLike>
-                <AllRounderButton length={"60px"} buttonName={"edit"} />
-                <AllRounderButton length={"60px"} buttonName={"delete"} />
-            </CommentListBox>
+            {allMusicList.map((commentlist) => {
+                if (commentlist.musicid === musicId) {
+                    return (
+                        <CommentListBox>
+                            <Paragraph key={commentlist.id} length="100px">
+                                {commentlist.userName}
+                            </Paragraph>
+                            <Paragraph key={commentlist.id} length="240px">
+                                {commentlist.content}
+                            </Paragraph>
+                            <CommentLike>♥️</CommentLike>
+                            <CommentLike>♡</CommentLike>
+                            <AllRounderButton
+                                length={"60px"}
+                                buttonName={"edit"}
+                            />
+                            <AllRounderButton
+                                length={"60px"}
+                                buttonName={"delete"}
+                            />
+                        </CommentListBox>
+                    );
+                } else {
+                    return null;
+                }
+            })}
+            ; ;
         </>
     );
 };
-
 export default CommentList;
 
 const CommentListBox = styled.div`

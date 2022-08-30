@@ -1,37 +1,71 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { __updateMusic } from "../redux/module/musicSlice";
 
-const Item = () => {
-  return (
-    <ItemDiv>
-      <Like>♡♥️</Like>
-      <CoverImg src="https://lh3.googleusercontent.com/PSIZ9cf9hpESZwcSz2ylS5I-zIREqCSagxV-X4CJqefrE0sRCktRtFw-a7PlkLygmg7k1nZREKCaSzY=w544-h544-l90-rj" />
-      <Title>SICKO MODE</Title>
-      <Artist>Travis Scott</Artist>
-    </ItemDiv>
-  );
+const Item = ({ id, artist, title, like, coverUrl }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const likeHandler = (e) => {
+        e.preventDefault();
+        const updateLike = {
+            id,
+            like: !like,
+        };
+        dispatch(__updateMusic(updateLike));
+    };
+
+    return (
+        <ItemDiv>
+            {like ? (
+                <Like onClick={likeHandler}>♥️</Like>
+            ) : (
+                <Like onClick={likeHandler}>♡</Like>
+            )}
+            <CoverImg
+                onClick={() => {
+                    navigate("/detail/" + id, {
+                        state: {
+                            id,
+                        },
+                    });
+                }}
+                src={coverUrl}
+            />
+            <Title>{title}</Title>
+            <Artist>{artist}</Artist>
+        </ItemDiv>
+    );
 };
 const ItemDiv = styled.div`
-  margin: 20px auto;
-  width: 300px;
-  height: 400px;
-  border: 1px solid black;
+    background-color: white;
+    margin: 20px auto;
+    width: 250px;
+    height: 400px;
+    box-shadow: 1px 1px 15px grey;
 `;
 const CoverImg = styled.img`
-  width: 250px;
-  height: 250px;
-  margin: 10px auto 0;
-  border: 1px solid black;
+    width: 250px;
+    height: 250px;
+    margin: 20px auto 0;
 `;
-const Title = styled.h2``;
-const Artist = styled.h1``;
+const Title = styled.h2`
+    font-size: 17px;
+`;
+const Artist = styled.h1`
+    font-size: 25px;
+`;
 const Like = styled.div`
-  position: absolute;
-  background-color: white;
-  height: 20px;
-  width: 20px;
-  transform: translate(150%, 80%);
-  border-radius: 50%;
-  color: #fa1e2d;
+    position: absolute;
+    background-color: white;
+    height: 30px;
+    width: 30px;
+    font-size: 24px;
+    transform: translate(30%, 770%);
+    border-radius: 50%;
+    color: #fa1e2d;
+    box-shadow: 3px 3px 10px black;
 `;
 export default Item;
