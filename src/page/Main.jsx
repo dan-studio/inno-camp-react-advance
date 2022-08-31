@@ -9,10 +9,6 @@ import { __getMusic } from "../redux/module/musicSlice";
 const Main = () => {
     const dispatch = useDispatch();
     const { isLoading, error } = useSelector((state) => state.musics); //const initialState = {
-    // list: [],
-    // isLoading: false,
-    // error: null,
-    // };
 
     useEffect(() => {
         dispatch(__getMusic());

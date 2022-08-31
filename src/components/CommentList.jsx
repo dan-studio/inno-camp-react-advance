@@ -1,69 +1,64 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { __updateComment } from "../redux/module/commentSlice";
+import { useDispatch } from "react-redux";
+// import { useLocation } from "react-router-dom";
+import { __deleteComment, __updateComment } from "../redux/module/commentSlice";
 import styled from "styled-components";
 import AllRounderButton from "./AllRounderButton";
 
-const CommentList = ({ id, commentLike }) => {
-    const allMusicList = useSelector((state) => state.musics.comment);
-
-    const location = useLocation();
+const CommentList = ({ id, musicid, userName, content, commentLike }) => {
+    // const location = useLocation();
     const dispatch = useDispatch();
 
     /**useNavigate로 보내준 music의 id.**/
-    const musicid = location.state.id;
+    // const musicid = location.state.id;
 
     const CommentlikeHandler = (e) => {
-        e.preventDefault();
         const updateCommentLike = {
             musicid,
             id: id,
-            commentlike: !commentLike,
+            commentLike: !commentLike,
         };
-        console.log(id);
+        // console.log(id);
         dispatch(__updateComment(updateCommentLike));
+    };
+
+    // const updateCommentHandler = (e) => {
+    //     const updateComment = {
+    //         id,
+    //         userName,
+    //         content,
+    //     }
+    // };
+
+    const deleteCommentHandler = (e) => {
+        e.preventDefault();
+        //이런식으로 객체로 보내면 에러남.
+        // const deleteComment = {
+        //     // musicid,
+        //     id,
+        // };
+        dispatch(__deleteComment(id));
     };
 
     return (
         <>
-            {allMusicList.map((commentlist) => {
-                if (commentlist.musicid === musicid) {
-                    return (
-                        <CommentListBox>
-                            <Paragraph key={commentlist.id} length="100px">
-                                {commentlist.userName}
-                            </Paragraph>
-                            <Paragraph key={commentlist.id} length="240px">
-                                {commentlist.content}
-                            </Paragraph>
-                            <CommentLike>
-                                {commentLike ? (
-                                    <CommentLike onClick={CommentlikeHandler}>
-                                        ♥️
-                                    </CommentLike>
-                                ) : (
-                                    <CommentLike onClick={CommentlikeHandler}>
-                                        ♡
-                                    </CommentLike>
-                                )}
-                            </CommentLike>
-                            <AllRounderButton
-                                // onClick={updateCommentHandler}
-                                length={"60px"}
-                                buttonName={"edit"}
-                            />
-                            <AllRounderButton
-                                length={"60px"}
-                                buttonName={"delete"}
-                            />
-                        </CommentListBox>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-            ; ;
+            <CommentListBox>
+                <Paragraph length="100px">{userName}</Paragraph>
+                <Paragraph length="240px">{content}</Paragraph>
+                <CommentLike onClick={CommentlikeHandler}>
+                    {commentLike ? "♥️" : "♡"}
+                </CommentLike>
+                <AllRounderButton
+                    // onClick={updateCommentHandler}
+                    length={"60px"}
+                    buttonName={"edit"}
+                />
+                <AllRounderButton
+                    onClick={deleteCommentHandler}
+                    length={"60px"}
+                    buttonName={"delete"}
+                />
+            </CommentListBox>
         </>
     );
 };
@@ -77,7 +72,7 @@ const CommentListBox = styled.div`
     margin: auto;
 `;
 
-const CommentLike = styled.span`
+const CommentLike = styled.button`
     font-size: 20px;
     color: #fa1e2d;
 `;

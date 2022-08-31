@@ -45,7 +45,10 @@ const Detail = () => {
                 <Info {...getMusic} />
             </DetailContent>
             <DetailContent>
-                <CommentList {...getComment} />
+                {getComment &&
+                    getComment.map((comment) => (
+                        <CommentList key={comment.id} {...comment} />
+                    ))}
             </DetailContent>
             <CommentForm />
         </DetailPage>

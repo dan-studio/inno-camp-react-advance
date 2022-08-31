@@ -7,7 +7,7 @@ const initialState = {
     error: null,
 };
 
-//db에서 데이터 가져옴
+//db에서music 가져옴
 export const __getMusic = createAsyncThunk(
     "music/GET_MUSIC",
     async (payload, thunkAPI) => {
@@ -70,7 +70,7 @@ const musics = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        // TODO getMusic Thunk
+        // getMusic Thunk
         [__getMusic.pending]: (state) => {
             state.isLoading = true; // 네트워크 요청이 시작되면 로딩상태를 true로 변경
         },
@@ -82,7 +82,8 @@ const musics = createSlice({
             state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
             state.error = action.payload; // catch 된 error 객체를 state.error에 넣음
         },
-        // TODO addMusic Thunk
+
+        // addMusic Thunk
         [__addMusic.pending]: (state) => {
             state.isLoading = true;
         },
@@ -94,6 +95,7 @@ const musics = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+
         // TODO deleteMusic Thunk
         [__deleteMusic.pending]: (state) => {
             state.isLoading = true;
@@ -108,6 +110,7 @@ const musics = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+
         // TODO updateMusic Thunk
         [__updateMusic.pending]: (state) => {
             state.isLoading = true;

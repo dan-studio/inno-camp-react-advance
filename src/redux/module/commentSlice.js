@@ -7,7 +7,7 @@ const initialState = {
     error: null,
 };
 
-//db에서 데이터 가져옴
+//db에서 comment 가져옴
 export const __getComment = createAsyncThunk(
     "music/GET_Comment",
     async (payload, thunkAPI) => {
@@ -36,6 +36,21 @@ export const __addComment = createAsyncThunk(
     }
 );
 
+//db내 comment 삭제
+export const __deleteComment = createAsyncThunk(
+    "music/DELETE_Comment",
+    async (payload, thunkAPI) => {
+        try {
+            const data = await axios.delete(
+                `http://localhost:3001/comment/${payload}`
+            );
+            return thunkAPI.fulfillWithValue(payload);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
 //comment 수정
 export const __updateComment = createAsyncThunk(
     "music/UPDATE_Comment",
@@ -57,7 +72,7 @@ const comments = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        // TODO getMusic Thunk
+        // getComment Thunk
         [__getComment.pending]: (state) => {
             state.isLoading = true; // 네트워크 요청이 시작되면 로딩상태를 true로 변경
         },
@@ -69,7 +84,8 @@ const comments = createSlice({
             state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
             state.error = action.payload; // catch 된 error 객체를 state.error에 넣음
         },
-        // TODO addComment Thunk
+
+        // addComment Thunk
         [__addComment.pending]: (state) => {
             state.isLoading = true;
         },
@@ -79,6 +95,21 @@ const comments = createSlice({
             console.log(action.payload);
         },
         [__addComment.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        // deleteComment Thunk
+        [__deleteComment.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [__deleteComment.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.comment = state.comment.filter(
+                (comment) => comment.id !== action.payload
+            );
+        },
+        [__deleteComment.rejected]: (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         },
