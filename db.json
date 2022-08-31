@@ -19,17 +19,10 @@
   "comment": [
     {
       "musicId": "mMzIh40sR64ETXCQN3Y0s",
-      "id": "obWoiIVPjAP9rcEtTRnji",
-      "userName": "ㅀ",
-      "content": "ㅇ",
-      "like": false
-    },
-    {
-      "musicId": "mMzIh40sR64ETXCQN3Y0s",
       "id": "-z33cN5dzAMSAp2DIAMW4",
       "userName": "ㅇㅇ",
       "content": "ㅇㅇ",
-      "like": false
+      "like": true
     }
   ]
 }

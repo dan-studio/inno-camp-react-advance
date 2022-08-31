@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { __deleteComment, __updateComment } from "../redux/module/commentSlice";
+import { __deleteComment, __updateComment, __updateCommentLike } from "../redux/module/commentSlice";
 import AllRounderButton from "./AllRounderButton";
 import useInput from "../hooks/useInput";
 
@@ -12,7 +12,7 @@ const CommentList = ({ musicId, id, userName, content, like }) => {
 
   const [username, onChangeUsernameHandler, setUserName] = useInput();
   const [comment, onChangeCommentHandler, setComment] = useInput();
-  console.log(toggle);
+  
 
   useEffect(() => {
     setUserName(userName);
@@ -32,6 +32,13 @@ const CommentList = ({ musicId, id, userName, content, like }) => {
 
   const onDeleteCommentHandler = () => {
     dispatch(__deleteComment(id));
+  };
+
+  const onUpdateCommentLikeHandler = () => {
+    dispatch(__updateCommentLike({
+      id,
+      like:!like,
+    }));
   };
 
   const onUpdateCommentHandler = () => {
@@ -85,7 +92,7 @@ const CommentList = ({ musicId, id, userName, content, like }) => {
         <CommentListBox>
           <Paragraph length="100px">{userName}</Paragraph>
           <Paragraph length="240px">{content}</Paragraph>
-          <CommentLike>{like ? "♥️" : "♡"}</CommentLike>
+          <Like onClick={onUpdateCommentLikeHandler}>{like ? "♥️" : "♡"}</Like>
           <AllRounderButton
             length={"60px"}
             buttonName={"edit"}
@@ -114,9 +121,16 @@ const CommentListBox = styled.div`
   margin: auto;
 `;
 
-const CommentLike = styled.span`
-  font-size: 20px;
+const Like = styled.div`
+  background-color: white;
+  height: 30px;
+  width: 30px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
   color: #fa1e2d;
+  box-shadow: 3px 3px 10px black;
+  margin-right: 10px;
 `;
 
 const Paragraph = styled.p`
