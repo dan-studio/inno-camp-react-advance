@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 // import { useLocation } from "react-router-dom";
 import { __deleteComment, __updateComment } from "../redux/module/commentSlice";
@@ -7,6 +7,9 @@ import AllRounderButton from "./AllRounderButton";
 
 const CommentList = ({ id, musicid, userName, content, commentLike }) => {
     // const location = useLocation();
+    const [toggle, setToggle] = useState(false);
+    const userNameInput = useRef(null);
+    const contentInput = useRef(null);
     const dispatch = useDispatch();
 
     /**useNavigate로 보내준 music의 id.**/
@@ -22,13 +25,16 @@ const CommentList = ({ id, musicid, userName, content, commentLike }) => {
         dispatch(__updateComment(updateCommentLike));
     };
 
-    // const updateCommentHandler = (e) => {
-    //     const updateComment = {
-    //         id,
-    //         userName,
-    //         content,
-    //     }
-    // };
+    const updateCommentHandler = (e) => {
+        e.preventDefault();
+        const updateComment = {
+            id,
+            userName: userNameInput.current.value,
+            content: contentInput.current.value,
+        };
+        dispatch(__updateComment(updateComment));
+        setToggle(!toggle);
+    };
 
     const deleteCommentHandler = (e) => {
         e.preventDefault();
@@ -48,16 +54,51 @@ const CommentList = ({ id, musicid, userName, content, commentLike }) => {
                 <CommentLike onClick={CommentlikeHandler}>
                     {commentLike ? "♥️" : "♡"}
                 </CommentLike>
-                <AllRounderButton
-                    // onClick={updateCommentHandler}
-                    length={"60px"}
-                    buttonName={"edit"}
-                />
+                {toggle ? (
+                    <AllRounderButton
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setToggle(!toggle);
+                        }}
+                        buttonName={"Close"}
+                    />
+                ) : (
+                    <AllRounderButton
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setToggle(!toggle);
+                        }}
+                        buttonName={"Edit"}
+                    />
+                )}
                 <AllRounderButton
                     onClick={deleteCommentHandler}
                     length={"60px"}
                     buttonName={"delete"}
                 />
+                {toggle ? (
+                    <EditDiv>
+                        <h3>Edit</h3>
+                        <input
+                            length="300px"
+                            type="text"
+                            ref={userNameInput}
+                            placeholder="userName"
+                            defaultValue={userName}
+                        />
+                        <input
+                            length="300px"
+                            type="text"
+                            ref={contentInput}
+                            placeholder="content"
+                            defaultValue={content}
+                        />
+                        <AllRounderButton
+                            onClick={updateCommentHandler}
+                            buttonName={"Submit"}
+                        />
+                    </EditDiv>
+                ) : null}
             </CommentListBox>
         </>
     );
@@ -80,4 +121,21 @@ const Paragraph = styled.p`
     display: inline-block;
     word-wrap: break-word;
     width: ${(props) => props.length};
+`;
+const InputBox = styled.input`
+    margin: 30px;
+    padding: 8px 10px;
+    font-size: 20px;
+    border: none;
+    text-align: center;
+    :focus {
+        outline: none;
+    }
+    width: ${(props) => props.length};
+    &::placeholder {
+        color: #aaa;
+    }
+`;
+const EditDiv = styled.div`
+    box-shadow: 5px 5px 10px #999;
 `;
