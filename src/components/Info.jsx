@@ -49,7 +49,7 @@ const Info = ({ id, artist, title, coverUrl, like }) => {
       <StAlbumSet>
         <StAlbumImg src={coverUrl} />
         <StArtist>{artist}</StArtist>
-        <StTiltle>{title}</StTiltle>
+        <StTitle>{title}</StTitle>
       </StAlbumSet>
       <StButtonSet>
         {like ? <StLike onClick={likeHandler}>♥️</StLike> : <StLike onClick={likeHandler}>♡</StLike>}
@@ -135,7 +135,7 @@ const StAlbumImg = styled.img`
 
 const StArtist = styled.h2``;
 
-const StTiltle = styled.h2``;
+const StTitle = styled.h2``;
 
 const StButtonSet = styled.div`
   width: 450px;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Form from '../components/Form';
 import Header from '../components/Header';
 import List from '../components/List';
-import { __getMusic } from '../redux/module/musicSlice';
+import { __getMusic} from "../redux/module/musicSlice";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -15,12 +15,13 @@ const Main = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading . . .</div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
     return <div>{error.message}</div>;
   }
+
 
   return (
     <MainPage>

@@ -1,21 +1,29 @@
-import React, { useEffect } from "react";
-import Info from "../components/Info";
-import CommentForm from "../components/CommentForm";
-import CommentList from "../components/CommentList";
-import Header from "../components/Header";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import { __getMusic } from "../redux/module/musicSlice";
+import React, { useEffect } from 'react';
+import Info from '../components/Info';
+import CommentForm from '../components/CommentForm';
+import CommentList from '../components/CommentList';
+import Header from '../components/Header';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { __getMusic } from '../redux/module/musicSlice';
+import { __getComment } from '../redux/module/commentSlice';
 
 const Detail = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
+  const comments = useSelector((state) => state.comments.comment);
+  const contentList = comments.filter((comment) => comment.musicId === id);
+  const dispatch = useDispatch();
   const { isLoading, error, list } = useSelector((state) => state.musics);
   const getMusic = list.find((music) => music.id === id); //crud의 read 필요없음.
-  // const getComment = getMusic.comment;
+  console.log(list);
+  console.log(getMusic);
   useEffect(() => {
     dispatch(__getMusic());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(__getComment());
   }, [dispatch]);
 
   if (isLoading) {
@@ -32,9 +40,12 @@ const Detail = () => {
         <Info {...getMusic} />
       </DetailContent>
       <DetailContent>
-         <CommentList />
+        {contentList &&
+          contentList.map((comment) => (
+            <CommentList {...comment} key={comment.id} />
+          ))}
       </DetailContent>
-      <CommentForm />
+      <CommentForm {...getMusic} />
     </DetailPage>
   );
 };
