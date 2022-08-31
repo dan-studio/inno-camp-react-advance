@@ -6,6 +6,7 @@ const initialState = {
     isLoading: false,
     error: null,
 };
+
 //db에서 데이터 가져옴
 export const __getMusic = createAsyncThunk(
     "music/GET_MUSIC",
@@ -55,32 +56,6 @@ export const __updateMusic = createAsyncThunk(
         try {
             const data = await axios.patch(
                 `http://localhost:3001/list/${payload.id}`,
-                payload
-            );
-            return thunkAPI.fulfillWithValue(data.data);
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error);
-        }
-    }
-);
-
-export const __postComment = createAsyncThunk(
-    "music/postComment",
-    async (newComment) => {
-        const response = await axios.post(
-            "http://localhost:3001/list",
-            newComment
-        );
-    }
-);
-
-//comment 추가하기.
-export const __addComment = createAsyncThunk(
-    "music/ADD_Comment",
-    async (payload, thunkAPI) => {
-        try {
-            const data = await axios.post(
-                "http://localhost:3001/list",
                 payload
             );
             return thunkAPI.fulfillWithValue(data.data);
@@ -144,19 +119,6 @@ const musics = createSlice({
             );
         },
         [__updateMusic.rejected]: (state, action) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
-        // TODO addMusic Thunk
-        [__addComment.pending]: (state) => {
-            state.isLoading = true;
-        },
-        [__addComment.fulfilled]: (state, action) => {
-            state.isLoading = false;
-            state.list.push(action.payload);
-            console.log(action.payload);
-        },
-        [__addComment.rejected]: (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         },

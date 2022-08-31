@@ -4,31 +4,33 @@ import { nanoid } from "@reduxjs/toolkit";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { __addComment } from "../redux/module/musicSlice";
+import { __addComment } from "../redux/module/commentSlice";
 import AllRounderButton from "./AllRounderButton";
 
-const CommentForm = ({ id, commentId, userName, content }) => {
+const CommentForm = () => {
     const userNameInput = useRef(null);
     const contentInput = useRef(null);
+
     const location = useLocation();
-    const musicid = location.state.id;
-    // const comentLikeInput = useRef(null);
     const dispatch = useDispatch();
 
+    /**useNavigate로 보내준 music의 id.**/
+    const musicid = location.state.id;
+
+    /**새로 작성한 comment를 제출한다.(list에 addComment) **/
     const onCommentHandler = (e) => {
         e.preventDefault();
         dispatch(
             __addComment({
-                musicid,
-                // id,
-                commentId: nanoid(),
+                musicid: musicid,
+                id: nanoid(),
                 userName: userNameInput.current.value,
                 content: contentInput.current.value,
                 commentLike: false,
             })
         );
     };
-    console.log(id);
+    // console.log(id);
     return (
         <CommentFormBox>
             <div>

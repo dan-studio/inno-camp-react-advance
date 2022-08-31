@@ -1,17 +1,34 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { __updateComment } from "../redux/module/commentSlice";
 import styled from "styled-components";
 import AllRounderButton from "./AllRounderButton";
 
-const CommentList = ({ id, comment }) => {
-    const allMusicList = useSelector((state) => state.musics.list);
+const CommentList = ({ id, commentLike }) => {
+    const allMusicList = useSelector((state) => state.musics.comment);
+
     const location = useLocation();
-    const musicId = location.state.id;
+    const dispatch = useDispatch();
+
+    /**useNavigate로 보내준 music의 id.**/
+    const musicid = location.state.id;
+
+    const CommentlikeHandler = (e) => {
+        e.preventDefault();
+        const updateCommentLike = {
+            musicid,
+            id: id,
+            commentlike: !commentLike,
+        };
+        console.log(id);
+        dispatch(__updateComment(updateCommentLike));
+    };
+
     return (
         <>
             {allMusicList.map((commentlist) => {
-                if (commentlist.musicid === musicId) {
+                if (commentlist.musicid === musicid) {
                     return (
                         <CommentListBox>
                             <Paragraph key={commentlist.id} length="100px">
@@ -20,9 +37,19 @@ const CommentList = ({ id, comment }) => {
                             <Paragraph key={commentlist.id} length="240px">
                                 {commentlist.content}
                             </Paragraph>
-                            <CommentLike>♥️</CommentLike>
-                            <CommentLike>♡</CommentLike>
+                            <CommentLike>
+                                {commentLike ? (
+                                    <CommentLike onClick={CommentlikeHandler}>
+                                        ♥️
+                                    </CommentLike>
+                                ) : (
+                                    <CommentLike onClick={CommentlikeHandler}>
+                                        ♡
+                                    </CommentLike>
+                                )}
+                            </CommentLike>
                             <AllRounderButton
+                                // onClick={updateCommentHandler}
                                 length={"60px"}
                                 buttonName={"edit"}
                             />
