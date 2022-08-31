@@ -7,21 +7,30 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { __getMusic } from "../redux/module/musicSlice";
+import { __getComment } from '../redux/module/commentSlice';
 
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { isLoading, error, list } = useSelector((state) => state.musics);
-  const getMusic = list.find((music) => music.id === id); //crud의 read 필요없음.
-  // const getComment = getMusic.comment;
+  const getMusic = list.find((music) => music.id === id);
+  const { commentIsLoading, commentError, comment } = useSelector((state) => state.comments);
+  const getComment = comment.filter(comment=>comment.musicId === id);
+
   useEffect(() => {
     dispatch(__getMusic());
   }, [dispatch]);
 
-  if (isLoading) {
+  
+  useEffect(() => {
+    dispatch(__getComment());
+  }, [dispatch]);
+  
+
+  if (isLoading || commentIsLoading) {
     return <div>Loading . . .</div>;
   }
-  if (error) {
+  if (error || commentError) {
     return <div>{error.message}</div>;
   }
 
@@ -32,7 +41,7 @@ const Detail = () => {
         <Info {...getMusic} />
       </DetailContent>
       <DetailContent>
-        <CommentList />
+        {getComment && getComment.map(comment=> <CommentList {...comment} key={comment.id}/>)}
       </DetailContent>
       <CommentForm />
     </DetailPage>

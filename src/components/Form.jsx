@@ -27,7 +27,6 @@ const Form = (props) => {
         title: title,
         coverUrl: coverUrl,
         like: false,
-        comment: [],
       })
     );
     setToggle(!toggle);

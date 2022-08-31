@@ -14,6 +14,7 @@ const Info = ({ id, artist, title, coverUrl, like }) => {
   const [updateTitle, onChangeTitleHandler, setUpdateTitle] = useInput();
   const [updateCoverUrl, onChangeCoverUrlHandler, setUpdateCoverUrl] = useInput();
 
+
   useEffect(() => {
     setUpdateArtist(artist);
   }, [artist]);

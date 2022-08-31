@@ -1,27 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import AllRounderButton from "./AllRounderButton";
 import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { useParams } from "react-router-dom";
 import useInput from "../hooks/useInput";
+import { __addComment } from '../redux/module/commentSlice';
+
+
+
 
 const CommentForm = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [username, onChangeUsernameHandler] = useInput();
-  const [comment, onChangeCommentHandler] = useInput();
+  const [username, onChangeUsernameHandler, setUserName] = useInput();
+  const [comment, onChangeCommentHandler, setComment] = useInput();
+
+  const [formHelper, setFormHelper] = useState("");
+
+
 
   const addCommentHandler = () => {
+    if(!username){return setFormHelper("You Must Enter UserName to Proceed")}
+    if(!comment){return setFormHelper("You Must Enter Comment to Proceed")}
+    dispatch(__addComment(
+      {
+        musicId:id,
+        id:nanoid(),
+        userName:username,
+        content:comment,
+        like:false,
+      }));
 
+    setFormHelper("")
+    setUserName("");
+    setComment("");
   }
 
   return (
     <CommentFormBox>
       <div>
-        <CommentFormInput length="200px" type="text" placeholder="Username" onChange={onChangeUsernameHandler}/>
-        <CommentFormInput length="400px" type="text" placeholder="comment" onChange={onChangeCommentHandler}/>
+        <FormHelper>{formHelper}</FormHelper>
+        <CommentFormInput length="200px" type="text" placeholder="Username" onChange={onChangeUsernameHandler} value={username}/>
+        <CommentFormInput length="400px" type="text" placeholder="comment" onChange={onChangeCommentHandler} value={comment}/>
       </div>
       <AllRounderButton onClick={addCommentHandler} buttonName={"Submit"}/>
     </CommentFormBox>
@@ -48,3 +70,9 @@ const CommentFormInput = styled.input`
     color: #aaa;
   }
 `;
+
+const FormHelper = styled.div`
+margin-top: 10px;
+font-size: 20px;
+color: #fa1e2d;
+`
