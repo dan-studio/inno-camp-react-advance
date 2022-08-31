@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import useInput from "../components/hooks/useInput";
 import { useDispatch } from "react-redux";
 // import { addMusic } from "../redux/module/musicSlice";
 import { __addMusic } from "../redux/module/musicSlice";
@@ -8,9 +9,9 @@ import AllRounderButton from "./AllRounderButton";
 // import useInput from "./hooks/useInput";
 
 const Form = (props) => {
-    const titleInput = useRef(null);
-    const artistInput = useRef(null);
-    const ImgUrlInput = useRef(null);
+    const [artist, onChangeArtistHandler] = useInput();
+    const [title, onChangeTitleHandler] = useInput();
+    const [CoverUrl, onChangeCoverUrlHandler] = useInput();
 
     const dispatch = useDispatch();
 
@@ -19,25 +20,23 @@ const Form = (props) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        if (!artistInput.current.value) {
+        if (!artist) {
             return setFormHelper("You Must Enter Artist to Proceed");
         }
-        if (!titleInput.current.value) {
+        if (!title) {
             return setFormHelper("You Must Enter Title to Proceed");
         }
-        if (!ImgUrlInput.current.value) {
+        if (!CoverUrl) {
             return setFormHelper("You Must Enter Image URL to Proceed");
         }
-        dispatch(
-            __addMusic({
-                id: nanoid(),
-                artist: artistInput.current.value,
-                title: titleInput.current.value,
-                coverUrl: ImgUrlInput.current.value,
-                like: false,
-                comment: [],
-            })
-        );
+        const addMusic = {
+            id: nanoid(),
+            artist: artist,
+            title: title,
+            coverUrl: CoverUrl,
+            like: false,
+        };
+        dispatch(__addMusic(addMusic));
         setToggle(!toggle);
     };
     return (
@@ -48,21 +47,21 @@ const Form = (props) => {
                         <FormHelper>{formHelper}</FormHelper>
                         <InputBox
                             length="300px"
-                            ref={artistInput}
                             type="text"
                             placeholder="Artist"
+                            onChange={onChangeArtistHandler}
                         />
                         <InputBox
                             length="300px"
-                            ref={titleInput}
                             type="text"
                             placeholder="Title"
+                            onChange={onChangeTitleHandler}
                         />
                         <InputBox
                             length="500px"
-                            ref={ImgUrlInput}
                             type="text"
                             placeholder="Cover URL"
+                            onChange={onChangeCoverUrlHandler}
                         />
                         <AllRounderButton
                             onClick={submitHandler}

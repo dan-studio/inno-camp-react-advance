@@ -38,7 +38,7 @@ const CommentList = ({ id, musicid, userName, content, commentLike }) => {
 
     const deleteCommentHandler = (e) => {
         e.preventDefault();
-        //이런식으로 객체로 보내면 에러남.
+        // 이런식으로 객체로 보내면 에러남.
         // const deleteComment = {
         //     // musicid,
         //     id,

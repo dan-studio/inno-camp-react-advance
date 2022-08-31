@@ -29,6 +29,7 @@ export const __addComment = createAsyncThunk(
                 "http://localhost:3001/comment",
                 payload
             );
+            console.log(data);
             return thunkAPI.fulfillWithValue(data.data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -44,6 +45,7 @@ export const __deleteComment = createAsyncThunk(
             const data = await axios.delete(
                 `http://localhost:3001/comment/${payload}`
             );
+            console.log(data);
             return thunkAPI.fulfillWithValue(payload);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -92,7 +94,7 @@ const comments = createSlice({
         [__addComment.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.comment.push(action.payload);
-            console.log(action.payload);
+            console.log(action.payload.id);
         },
         [__addComment.rejected]: (state, action) => {
             state.isLoading = false;
