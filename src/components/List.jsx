@@ -8,17 +8,17 @@ import LoadingItem from "./LoadingItem";
 const List = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
-  const [loadingItem, setLoadingItem] = useState(true)
+  const [loadingItem, setLoadingItem] = useState(true);
   const [loading, setLoading] = useState(false);
   const [ref, inView] = useInView({
     threshold: 1,
   });
   const scrollToTop = () => {
     window.scrollTo({
-      top:0,
-      behavior: "smooth"
-    })
-  }
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const loadItems = useCallback(async () => {
     setLoading(true);
@@ -50,10 +50,10 @@ const List = () => {
       setTimeout(() => {
         setPage((prevState) => prevState + 1);
       }, 800);
-    }else if(inView && loading){
-      setLoadingItem(false)
-    }else{
-      setLoadingItem(true)
+    } else if (inView && loading) {
+      setLoadingItem(false);
+    } else {
+      setLoadingItem(true);
     }
   }, [inView, loading]);
 
@@ -62,12 +62,12 @@ const List = () => {
       {items &&
         items.map((music) =>
           music.map((music, idx) => (
-              <ItemDiv key={idx}>
-                <Item {...music} key={music.id} ref={ref}/>
-              </ItemDiv>
+            <ItemDiv key={idx}>
+              <Item {...music} key={music.id} ref={ref} />
+            </ItemDiv>
           ))
-          )}
-          {loadingItem?loadSkeleton():"end of the page"}
+        )}
+      {loadingItem ? loadSkeleton() : (<EndMessage>end of the page</EndMessage>)}
       <ToTheTopButton onClick={scrollToTop}>TOP</ToTheTopButton>
     </ListDiv>
   );
@@ -86,9 +86,9 @@ const ListDiv = styled.div`
   flex-wrap: wrap;
 `;
 const ToTheTopButton = styled.button`
-position: fixed;
-right: 20px;
-top: 20px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
   margin: 5px 2px;
   padding: 15px;
   background-color: transparent;
@@ -104,5 +104,7 @@ top: 20px;
     color: white;
   }
 `;
-
+const EndMessage = styled.h1`
+margin: 100px auto;
+`;
 export default List;
