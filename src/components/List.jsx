@@ -30,7 +30,6 @@ const List = () => {
     console.log("Loading done")
   }, [page]);
 
-<<<<<<< HEAD
   const loadSkeleton = () => (
     <>
       <LoadingItem />
@@ -41,9 +40,6 @@ const List = () => {
       <LoadingItem />
     </>
   );
-=======
-
->>>>>>> 5734988ee32b7d24d426c844e8aa28bbcdd7f0f7
 
   // `getItems` 가 바뀔 때 마다 함수 실행
   useEffect(() => {
@@ -63,12 +59,6 @@ const List = () => {
       setLoadingItem(true)
     }
   }, [inView, loading]);
-<<<<<<< HEAD
-=======
-  const find = items.map(item=>
-    item.map(item=>item.id))
-
->>>>>>> 5734988ee32b7d24d426c844e8aa28bbcdd7f0f7
 
   return (
     <ListDiv>
