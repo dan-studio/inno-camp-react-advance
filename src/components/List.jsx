@@ -22,12 +22,10 @@ const List = () => {
 
   const loadItems = useCallback(async () => {
     setLoading(true);
-    console.log("isLoading")
     await getItems(page, 6).then((res) => {
       setItems((prevState) => [...prevState, res]);
     });
     setLoading(false);
-    console.log("Loading done")
   }, [page]);
 
   const loadSkeleton = () => (
@@ -54,7 +52,6 @@ const List = () => {
       }, 800);
     }else if(inView && loading){
       setLoadingItem(false)
-      console.log("lodinitem set FALSE")
     }else{
       setLoadingItem(true)
     }
