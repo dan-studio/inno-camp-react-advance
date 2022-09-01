@@ -9,7 +9,7 @@ const CommentList = ({ musicId, id, userName, content, like }) => {
   const dispatch = useDispatch();
   const [formHelper, setFormHelper] = useState("");
   const [toggle, setToggle] = useState(false);
-
+  console.log(toggle)
   const [username, onChangeUsernameHandler, setUserName] = useInput();
   const [comment, onChangeCommentHandler, setComment] = useInput();
   
