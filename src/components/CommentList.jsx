@@ -1,26 +1,21 @@
-import React from 'react';
-import styled from "styled-components";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { __getComment } from "../redux/module/commentSlice";
+import Comment from "./Comment";
 
-const CommentListBox = styled.div`
-  height: 100px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: auto;
-`;
-
-const CommentLike = styled.span`
-  font-size: 30px;
-  color: red;
-`;
-const CommentList = () => {
+const CommentList = ({id}) => {
+  const dispatch = useDispatch();
+  const getComment = useSelector((state) => state.comments.comments.filter((comment)=>comment.musicId === id));
+  // const getComment = list.find((comment)=>comment.musicId===id)
+  useEffect(() => {
+    dispatch(__getComment());
+  }, [dispatch]);
   return (
-    <CommentListBox>
-      <span>User1:</span>
-      <p>Comment1</p>
-      <CommentLike>♡♥</CommentLike>
-      <button>Del</button>
-    </CommentListBox>
+    <>
+        {getComment.map((comment)=>(
+        <Comment {...comment} key={comment.id}/>
+        ))}
+    </>
   );
 };
 
