@@ -137,7 +137,7 @@ const StInfoContainer = styled.div`
   flex-wrap: wrap;
   max-width: 1000px;
   min-width: 800px;
-  margin: 20px auto;
+  margin: 50px auto;
 `;
 const StAlbumSet = styled.div`
   margin: 30px 0 0 0;

@@ -6,8 +6,6 @@ import Comment from "./Comment";
 const CommentList = ({id}) => {
   const dispatch = useDispatch();
   const getComment = useSelector((state) => state.comments.comments.filter((comment)=>comment.musicId === id));
-  const getC = useSelector((state)=>state)
-  console.log(getC)
   // const getComment = list.find((comment)=>comment.musicId===id)
   useEffect(() => {
     dispatch(__getComment());

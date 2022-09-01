@@ -6,7 +6,6 @@ import { __updateMusic } from "../redux/module/musicSlice";
 
 const Item = React.forwardRef((music, ref) => {
   const { id, artist, title, like, coverUrl } = music
-  console.log(artist)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ const Item = React.forwardRef((music, ref) => {
   };
 
   return (
-    <div ref={ref}>
+    <div>
       {like ? (
         <Like onClick={likeHandler}>♥️</Like>
       ) : (
@@ -35,6 +34,7 @@ const Item = React.forwardRef((music, ref) => {
       />
       <Title>{title}</Title>
       <Artist>{artist}</Artist>
+      <div ref={ref}/>
     </div>
   );
 });

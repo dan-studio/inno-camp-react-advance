@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useInput = () => {
 	// 2. value는 useState로 관리하고, 

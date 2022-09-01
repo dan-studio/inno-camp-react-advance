@@ -23,7 +23,6 @@ const CommentForm = () => {
       commentLike: false,
     };
     dispatch(__addComment(postComment));
-    console.log(postComment);
     setUserName("");
     setContent("");
     setFormHelper("")

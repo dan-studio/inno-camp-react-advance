@@ -13,7 +13,7 @@ const Header = () => {
 };
 const HeaderDiv = styled.div`
   width: 240px;
-  margin: 10px auto 0;
+  margin: 50px auto 0;
   display: flex;
   flex-wrap: wrap;
 `;
